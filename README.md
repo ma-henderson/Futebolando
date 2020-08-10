@@ -17,20 +17,32 @@ h2:hover{
 }
 </style>
 ## Contents:
-* [Partidas](#partidas)
-* [Times](#times)
-* [Mercado](#mercado)
-* [Status](#status)
+### [Partidas](#partidas)
+* https://api.cartolafc.globo.com/partidas
 
-time_id = 26522045
+### [Times](#times)
 
-https://api.cartolafc.globo.com/partidas
+* https://api.cartolafc.globo.com/times?q={name}
+  * _name = Eintracht_
 
-https://api.cartolafc.globo.com/time/id/{time_id}
+* https://api.cartolafc.globo.com/time/id/{time_id}
+  * _time_id = 26522045_
 
-https://api.cartolafc.globo.com/atletas/mercado
+### [Mercado](#mercado)
 
-https://api.cartolafc.globo.com/mercado/status
+* https://api.cartolafc.globo.com/atletas/mercado
+
+### [Status](#status)
+
+* https://api.cartolafc.globo.com/mercado/status
+
+
+
+
+
+
+
+
 ___
 ## **Partidas** 
 ### Retorna os dados em JSON

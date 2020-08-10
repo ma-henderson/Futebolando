@@ -35,7 +35,7 @@ function App() {
 
         <Footer style={{ textAlign: 'center' }}>Design Library by Ant Design - Developed by ma-henderson</Footer>
 
-      </Layout>,
+      </Layout>
     </div>
     </Router>
   );
