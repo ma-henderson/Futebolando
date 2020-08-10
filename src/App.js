@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import PlayersTable from './Pages/PlayersTable';
-import {BrowserRouter as Router, Switch, Link, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Link} from 'react-router-dom';
 
 import { Layout, Menu, Breadcrumb } from 'antd';
 const { Header, Content, Footer } = Layout;
