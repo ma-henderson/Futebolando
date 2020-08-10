@@ -5,7 +5,7 @@ The following is a guide to the API's used to collect data.
 
 # API's:
 <style>
-h2{color: navy; text-transform: uppercase; margin-top: 30px}
+h2{text-transform: uppercase; margin-top: 30px}
 h4:not(:first-child){
 margin-top: 50px;}
 h2:hover{
