@@ -1,9 +1,14 @@
 import React from 'react';
+import {BrowserRouter as Router, Link, Switch, Route} from 'react-router-dom';
+import { Layout, Menu, Breadcrumb } from 'antd';
 import './App.css';
 import PlayersTable from './Pages/PlayersTable';
-import {BrowserRouter as Router, Link} from 'react-router-dom';
+import MyTeam from './Pages/MyTeam';
+import Home from './Pages/Home';
 
-import { Layout, Menu, Breadcrumb } from 'antd';
+
+
+
 const { Header, Content, Footer } = Layout;
 
 
@@ -17,10 +22,11 @@ function App() {
           <div className="logo" />
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
             <Menu.Item key="1"><Link to="/">Mercado</Link></Menu.Item>
-            <Menu.Item key="2">Seu time</Menu.Item>
-            <Menu.Item key="3">Update</Menu.Item>
+            <Menu.Item key="2"><Link to="/MeuTime">Meu time</Link></Menu.Item>
+            <Menu.Item key="3"><Link to="/">...</Link></Menu.Item>
           </Menu>
         </Header>
+
 
         <Content style={{ padding: '0 50px'}}>
           <Breadcrumb style={{ margin: '16px 0' }}>
@@ -29,11 +35,20 @@ function App() {
             <Breadcrumb.Item>App</Breadcrumb.Item>
           </Breadcrumb>
           <div className="site-layout-content">
-            <PlayersTable />
+          <Switch>
+            <Route path="/MeuTime">
+              <MyTeam />
+            </Route>
+            <Route path="/">
+              <PlayersTable />
+            </Route>
+         </Switch>
           </div>
         </Content>
 
-        <Footer style={{ textAlign: 'center' }}>Design Library by Ant Design - Developed by ma-henderson</Footer>
+        <Footer style={{ textAlign: 'center' }}>Design Library by Ant Design - Developed by  
+           <a href="https://github.com/ma-henderson/Futebolando" style={{fontWeight: 'bold'}}> ma-henderson</a>
+        </Footer>
 
       </Layout>
     </div>

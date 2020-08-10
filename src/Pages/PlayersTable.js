@@ -4,7 +4,7 @@ import { Table, Button, Space } from 'antd';
 var mercado = require('../Data/mercado1.json');
 
 
-const Players = () => {
+const PlayersTable = () => {
 
   const [state, setState] = useState({
     filteredInfo: null,
@@ -55,7 +55,7 @@ const Players = () => {
       render: text => <a href="#">{text}</a>,
       sorter: (a, b) => a.name - b.name,
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
-      ellipsis: true,
+      ellipsis: false,
     },
     {
       title: 'Valor',
@@ -103,7 +103,7 @@ const Players = () => {
       const newData = {};
       newData['key'] = data.length + 1
       newData['name'] = player['apelido']
-      newData['price'] = player['preco_num']
+      newData['price'] = player['preco_num'].toFixed(2)
       newData['position']=mercado['posicoes'][player['posicao_id']]['nome']
 
       data.push(newData)
@@ -122,7 +122,7 @@ const Players = () => {
   )
 }
 
-export default Players
+export default PlayersTable
 
 
 // ----------------###----------- ----#--------------#### -----------
