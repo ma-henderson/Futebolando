@@ -27,31 +27,35 @@ const columns = [
 ];
 var data = [];
 const teamId = 4829739
-
+console.log(`https://api.cartolafc.globo.com/time/id/${teamId}`)
 fetch(`https://api.cartolafc.globo.com/time/id/${teamId}`, 
   {
     method: 'GET',
+    // credentials: 'same-origin', // include, *same-origin, omit
     headers: {
-      'content-type': 'application/json',
-      'Access-Control-Allow-Origin': 'https://cartolafc.globo.com'
+      'content-type': 'application/x-www-form-urlencoded',
+      'Accept':  'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+      
     }
   })
   .then(
-    (result, err) => {
-      if (err) {console.log(err)}
+    (response)=>response.json()
+  )
+  .then(
+    (result) => {
       var teamData = result
-      teamData["atletas"].forEach((player)=>{
-        // Instantiate object, fill it, push it
-        const newData = {};
-        newData['key'] = data.length + 1
-        newData['name'] = player['apelido']
-        newData['value'] = player['preco_num']
-        newData['position']=teamData['posicoes'][player['posicao_id']]['nome']
-
-        data.push(newData)
-      })
       console.log(teamData)
-      setState({...state, isLoading: false})
+      // teamData["atletas"].forEach((player)=>{
+      //   // Instantiate object, fill it, push it
+      //   const newData = {};
+      //   newData['key'] = data.length + 1
+      //   newData['name'] = player['apelido']
+      //   newData['value'] = player['preco_num']
+      //   newData['position']=teamData['posicoes'][player['posicao_id']]['nome']
+
+      //   data.push(newData)
+      // })
+      // setState({...state, isLoading: false})
     }
   )
 
