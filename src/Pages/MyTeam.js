@@ -142,7 +142,7 @@ const MyTeam = () => {
   useEffect(()=>{
     if (state.isLoading && !state.isFetching) {
       state.isFetching = true;
-      fetch(`http://localhost:3020/time/check`,
+      fetch(`${process.env.REACT_APP_BACKEND_URL}time/check`,
       {
         method: 'POST',
         headers: {
