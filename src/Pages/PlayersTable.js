@@ -52,7 +52,7 @@ const PlayersTable = () => {
       title: 'Nome',
       dataIndex: 'name',
       key: 'name',
-      render: text => <a href="#">{text}</a>,
+      // render: text => <a href="#">{text}</a>,
       sorter: (a, b) => a.name - b.name,
       sortOrder: sortedInfo.columnKey === 'name' && sortedInfo.order,
       ellipsis: false,

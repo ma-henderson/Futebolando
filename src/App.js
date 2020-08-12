@@ -4,10 +4,7 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 import './App.css';
 import PlayersTable from './Pages/PlayersTable';
 import MyTeam from './Pages/MyTeam';
-import Home from './Pages/Home';
-
-
-
+import MyTeam_Search from './Components/MyTeam_Search.js';
 
 const { Header, Content, Footer } = Layout;
 
@@ -29,20 +26,25 @@ function App() {
 
 
         <Content style={{ padding: '0 50px'}}>
-          <Breadcrumb style={{ margin: '16px 0' }}>
+          {/* <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>PlayersTable</Breadcrumb.Item>
             <Breadcrumb.Item>List</Breadcrumb.Item>
             <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
+          </Breadcrumb> */}
           <div className="site-layout-content">
+          
           <Switch>
             <Route path="/MeuTime">
               <MyTeam />
+            </Route>
+            <Route path="/buscar">
+              <MyTeam_Search />
             </Route>
             <Route path="/">
               <PlayersTable />
             </Route>
          </Switch>
+         
           </div>
         </Content>
 

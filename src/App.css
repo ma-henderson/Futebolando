@@ -3,7 +3,7 @@
 
 .site-layout-content {
   background: #fff;
-  padding: 24px 0;
+  padding: 12px 0;
   min-height: 60vh;
 }
 
@@ -18,6 +18,10 @@
   float: left;
 }
 
+.avatar-name{
+  font-size: 30px;
+  font-weight: bold;
+}
 
 
 @media (max-width: 768px) {
@@ -27,6 +31,15 @@
   .site-layout-content .ant-table-tbody{
     font-size: 12px;
   }
+  .ant-table-tbody .ant-table-row .ant-table-cell{
+    padding: 8px;
+  }
+
+  .ant-table-column-sorters{
+    padding: 8px;
+    font-size: 12px;
+  }
+
   .ant-btn{
     font-size: 12px;
   }
