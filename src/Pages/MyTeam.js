@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { Table, Button, Space } from 'antd';
 import MyTeam_Profile from '../Components/MyTeam_Profile';
+import AppContext from '../AppContext';
 
 const MyTeam = () => {
+  const [globalState, setGlobalState] = useContext(AppContext);
+
   const [state, setState] = useState({
     filteredInfo: null,
     sortedInfo: null,
@@ -11,6 +14,70 @@ const MyTeam = () => {
     data: [],
     team_value: null
   })
+
+  var position_table = {
+    1: {nome: "Goleiro", short: "gol" },
+    2: {nome: "Lateral", short: "lat" },
+    3: {nome: "Zagueiro", short: "zag" },
+    4: {nome: "Meia", short: "mei" },
+    5: {nome: "Atacante", short: "ata" },
+    6: {nome: "Técnico", short: "tec" }
+  }
+
+  const formatData = (teamData) => {
+    state.profileData = teamData
+    let totalValue = 0
+    sessionStorage.setItem('time_id', teamData.profile.time_id)
+    console.log(teamData)
+    teamData.atletas.forEach((player)=>{
+      // Instantiate object, fill it, push it
+      const resData = {};
+      resData.key = state.data.length + 1
+      resData.name = player.apelido
+      resData.value = player.preco_num.toFixed(2)
+      resData.position = position_table[player.posicao_id].nome
+      resData.posicao_id = player.posicao_id
+      resData.pontos_num = player.pontos_num.toFixed(2)
+      resData.variacao_num = player.variacao_num.toFixed(2)
+      
+      totalValue += player.preco_num
+
+      state.data.push(resData)
+      if (state.data.length === teamData.atletas.length) {
+        state.team_value = totalValue.toFixed(2);
+        setState({...state, isLoading: false})
+      }      
+    })
+  }
+  useEffect(()=>{if (globalState.meuTime) {
+    formatData(globalState.meuTime)
+  }
+  }, []);
+  
+  var teamSessionID = sessionStorage.getItem('time_id')
+    useEffect(()=>{
+    if (state.isLoading && !globalState.meuTime && teamSessionID) { 
+      fetch(`${process.env.REACT_APP_BACKEND_URL}time/check`,
+      {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"},
+        body: JSON.stringify({time_id: teamSessionID})
+      })
+      .then(
+        (response)=>response.json()
+      )
+      .then(
+        (result) => {
+
+          formatData(result)
+        });
+    } else if (globalState.meuTime) {
+      console.log(globalState.meuTime);
+      formatData(globalState.meuTime)
+    }
+  }, []); // later check what happens when putting globalState watched Array
+  
 
   const handleChange = (pagination, filters, sorter) => {
     // console.log('Various parameters', pagination, filters, sorter);
@@ -21,13 +88,11 @@ const MyTeam = () => {
       sortedInfo: sorter,
     });
   };
-
-  
+  // Action Buttons
   const clearFilters = () => {
     setState({
       ...state, filteredInfo: null });
   };
-
   const clearAll = () => {
     setState({
       ...state,
@@ -35,7 +100,6 @@ const MyTeam = () => {
       sortedInfo: null,
     });
   };
-
   const setPriceSort = () => {
     setState({
       ...state,
@@ -50,14 +114,7 @@ const MyTeam = () => {
   sortedInfo = sortedInfo || {};
   filteredInfo = filteredInfo || {};
 
-  var position_table = {
-    1: {nome: "Goleiro", short: "gol" },
-    2: {nome: "Lateral", short: "lat" },
-    3: {nome: "Zagueiro", short: "zag" },
-    4: {nome: "Meia", short: "mei" },
-    5: {nome: "Atacante", short: "ata" },
-    6: {nome: "Técnico", short: "tec" }
-  }
+
 
   const columns = [
   {
@@ -78,7 +135,7 @@ const MyTeam = () => {
     ellipsis: false,
   },
   {
-    title: 'Valorizacao',
+    title: 'Valorização',
     dataIndex: 'variacao_num',
     key: 'variacao_num',
     sorter: (a, b) => a.variacao_num - b.variacao_num,
@@ -138,72 +195,29 @@ const MyTeam = () => {
   },
 ];
 
-  var teamId =  15025293
-  useEffect(()=>{
-    if (state.isLoading && !state.isFetching) {
-      state.isFetching = true;
-      fetch(`${process.env.REACT_APP_BACKEND_URL}time/check`,
-      {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json"},
-        body: JSON.stringify({time_id: teamId})
-      })
-      .then(
-        (response)=>response.json()
-      )
-      .then(
-        (result) => {
-          state.profileData = result
-          let totalValue = 0
-
-          result.atletas.forEach((player)=>{
-            // Instantiate object, fill it, push it
-            const resData = {};
-            resData.key = state.data.length + 1
-            resData.name = player.apelido
-            resData.value = player.preco_num.toFixed(2)
-            resData.position = position_table[player.posicao_id].nome
-            resData.posicao_id = player.posicao_id
-            resData.pontos_num = player.pontos_num.toFixed(2)
-            resData.variacao_num = player.variacao_num.toFixed(2)
-            
-            totalValue += player.preco_num
-
-            state.data.push(resData)
-            if (state.data.length === result.atletas.length) {
-              state.team_value = totalValue.toFixed(2);
-              setState({...state, isLoading: false})
-              console.log(state)
-            }      
-          })
-
-          
-        });
-    }
-  });
-  
-  return(
-    <div>
-      
-        {!state.isLoading &&
-          <div>
-          <MyTeam_Profile props={state.profileData} teamValue={state.team_value}/>
-          <Space style={{ marginBottom: 16 }}>
-            <Button onClick={setPriceSort}>Sort Price</Button>
-            <Button onClick={clearFilters}>Clear filters</Button>
-            <Button onClick={clearAll}>Clear filters and sorters</Button>
-          </Space>
-          <Table 
-            columns={columns}
-            onChange={handleChange}
-            dataSource={state.data}
-            pagination={{defaultPageSize: 20, hideOnSinglePage: true}} />
-          </div> 
-          }
-       
-    </div>
-  )
+  if (!state.isLoading) {
+    return (
+      <div>
+      <MyTeam_Profile props={state.profileData} teamValue={state.team_value}/>
+      <Space style={{ marginBottom: 16 }}>
+        <Button onClick={setPriceSort}>Sort Price</Button>
+        <Button onClick={clearFilters}>Clear filters</Button>
+        <Button onClick={clearAll}>Clear filters and sorters</Button>
+      </Space>
+      <Table 
+        columns={columns}
+        onChange={handleChange}
+        dataSource={state.data}
+        pagination={{defaultPageSize: 20, hideOnSinglePage: true}} />
+      </div> 
+    )
+  } else {
+    return (
+      <div>
+        Ainda nao escolheu seu time? <Button type="primary">Escolher seu time</Button>
+      </div>
+    )
+  }
 
 };
 export default MyTeam

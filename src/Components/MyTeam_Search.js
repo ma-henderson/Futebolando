@@ -23,7 +23,7 @@ const MyTeam_Search = () => {
         (response)=>response.json()
       )
       .then((result) => {
-        console.log(result)
+        console.log("search result")
         result.forEach(item=>state.payload.push(item))
         setState({
           ...state,
